@@ -28,20 +28,13 @@ public:
 	Color getPlaneColor() { return _color; }
 	
 	/// GEOMETRY METHODS
-	Vect getNormalAt(Vect);
-	double findIntersection(Ray ray) {
-		Vect ray_direction = ray.getRayDirection();
-
-		double a = ray_direction.dotProduct(_normal);
-
-		if (a == 0) {
-			/// ray is parallel to the plane
-			return -1.0;
-		}
-
-		double b = _normal.dotProduct(ray.getRayOrigin().vectAdd(_normal.vectMul(_distance).negation()));
-		return -1 * b / a;
+	Vect Plane::getNormalAt(Vect intersectionPoint) {
+		return _normal;
 	}
+	double findIntersection(Ray ray);
+	// WARNING
+	/// DO NOT USE THIS METHOD
+	IntersectionPoint findIntersection_2(Ray ray) { return IntersectionPoint(Vect(), Vect()); }
 };
 
 

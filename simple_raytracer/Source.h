@@ -23,8 +23,12 @@
 #include "Sphere.h"
 #include "Plane.h"
 #include "Object3D.h"
+/// DO NOT USE THIS
+#include "IntersectionPoint.h"
 
 
+/// If __CLASS_ALGORITHMN__ is set to TRUE it will use the algorithm from Classes
+#define __CLASS_ALGORITHMN__ false
 // Constants
 #define _WIDTH_ 640 /// Divide by 16 to make it faster but with lower resolution
 #define _HEIGHT_ 480 /// Divide by 16 to make it faster but with lower resolution

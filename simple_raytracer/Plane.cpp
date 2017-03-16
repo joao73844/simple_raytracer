@@ -24,6 +24,16 @@ Plane::~Plane()
 
 // Method Functions
 /// GEOMETRY FUNCTIONS
-Vect Plane::getNormalAt(Vect intersectionPoint) {
-	return _normal;
+double Plane::findIntersection(Ray ray) {
+	Vect ray_direction = ray.getRayDirection();
+
+	double a = ray_direction.dotProduct(_normal);
+
+	if (a == 0) {
+		/// ray is parallel to the plane
+		return -1.0;
+	}
+
+	double b = _normal.dotProduct(ray.getRayOrigin().vectAdd(_normal.vectMul(_distance).negation()));
+	return -1 * b / a;
 }

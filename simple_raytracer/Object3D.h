@@ -4,9 +4,14 @@
 
 // C File Headers
 // Project File Headers
+#include "IntersectionPoint.h"
 #include "Vect.h"
 #include "Ray.h"
 #include "Color.h"
+
+// Constants
+/// To calculate the accuracy error in the intersections
+#define _ACCURACY_ERROR_EPSILON_ 0.000001
 
 class Object3D {
 public:
@@ -22,6 +27,9 @@ public:
 	double findIntersection(Ray ray) {
 		return 0.0;
 	}
+	// WARNING
+	/// DO NOT USE THIS METHOD
+	virtual IntersectionPoint findIntersection_2(Ray ray) { return IntersectionPoint(Vect(), Vect()); }
 };
 
 
