@@ -12,7 +12,7 @@ int main(int argc, char * argv[]) {
 	Vect X (1, 0, 0);
 	Vect Y (0, 1, 0);
 	Vect Z (0, 0, 1);
-
+	
 	// Create Camera
 	/// Vectors of the camera
 	/// Position of the camera
