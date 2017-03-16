@@ -40,13 +40,7 @@ public:
 		}
 
 		double b = _normal.dotProduct(ray.getRayOrigin().vectAdd(_normal.vectMul(_distance).negation()));
-
-		/*
-		sadS
-		TO FINISH...
-		
-		
-		*/
+		return -1 * b / a;
 	}
 };
 

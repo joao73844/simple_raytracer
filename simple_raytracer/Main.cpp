@@ -35,6 +35,7 @@ int main(int argc, char * argv[]) {
 	Color pretty_green(0.5, 1.0, 0.5, 0.3);
 	Color gray();
 	Color black(0.0, 0.0, 0.0, 0.0);
+	Color maroon(0.5, 0.25, 0.25, 0);
 	/// Light Position
 	Vect light_position(-7, 10, -10);
 	Light scene_light(light_position, white);
@@ -43,6 +44,8 @@ int main(int argc, char * argv[]) {
 	// Scene Objects
 	/// Sphere
 	Sphere scene_sphere(O, 1.0, pretty_green);
+	/// Plane
+	Plane scene_plane(Y, -1, maroon);
 
 	// Ray Tracing Algorithm
 	for (int x = 0; x < _WIDTH_ ; x++) {
