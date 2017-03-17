@@ -99,6 +99,9 @@ int main(int argc, char * argv[]) {
 				intersections.push_back(scene_objects.at(index)->findIntersection(cam_ray));
 			}
 
+			// Determine what object is the closest one
+			int index_of_closest_obj = closestObject(intersections);
+
 			// Pixel Color
 			/// If its inside the coloring area
 			if ((x > 200 && x < 440) && (y > 200 && y < 280)) {

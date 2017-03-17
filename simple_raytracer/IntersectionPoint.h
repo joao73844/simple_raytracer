@@ -28,6 +28,10 @@ class IntersectionPoint
 {
 	Vect _intersectionPoint;
 	Vect _normal;
+	/// <variable> This distance represents the
+	/// distance from the ray origin to the
+	/// point of intersection
+	double _distance;
 public:
 	IntersectionPoint(Vect, Vect);
 	~IntersectionPoint();

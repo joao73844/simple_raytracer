@@ -119,3 +119,44 @@ void savebmp(const char * filename, int w, int h, int dpi, RGBType *data) {
 
 	fclose(f);
 }
+
+int closestObject(std::vector<double> object_intersections) {
+	/// Returns the index of the Closest Object to The Ray
+
+	// prevent unnessary calculations
+	/// if there are no intersections
+	if (object_intersections.size() == 0) return -1;
+	/// if the ray only intersected 1 object
+	if (object_intersections.size() == 1) {
+		/// if that intersection is greater that zero than its our index of minimum value
+		if (object_intersections.at(0) > 0) return 0;
+		/// otherwise the only intersection is negative
+		else return -1;
+	}
+
+	/// if it reach here it means that the ray intesected more than 1 object
+	// 1st - Find Maximum Value
+	/// ... which corresponds to the greatest distance from ray to intersection point
+	int index_of_minimum_value = 0;
+	double max = 0;
+	for (int i = 0; i < object_intersections.size(); i++) {
+		if (max < object_intersections.at(i)) {
+			max = object_intersections.at(i);
+		}
+	}
+	/// Then starting from the maximum value, find the minimum positive value
+	if (max > 0) {
+		/// we only want positive intersections
+		for (int i = 0; i < object_intersections.size(); i++) {
+			if (object_intersections.at(i) > 0 && object_intersections.at(i) <= max) {
+				max = object_intersections.at(i);
+				index_of_minimum_value = i;
+			}
+		}
+		return index_of_minimum_value;
+	}
+
+	/// otherwise, all the intersections were negatives
+	/// so, they didn't actually intersect anything...
+	return -1;
+}
