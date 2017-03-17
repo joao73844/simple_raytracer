@@ -1,6 +1,5 @@
 #include "Sphere.h"
 
-
 // Default Constructor
 /// Creates a Grey Sphere in the origin with radius 1
 Sphere::Sphere() {
@@ -30,7 +29,7 @@ double Sphere::findIntersection(Ray ray) {
 	double ray_origin_z = ray_origin.getZ();
 	/// Vector and Coordinates of the Direction of the Ray
 	/// This is just for the sake of legibility
-	Vect ray_direction = ray.getRayDirection().normalize();
+	Vect ray_direction = ray.getRayDirection();
 	double ray_direction_x = ray_direction.getX();
 	double ray_direction_y = ray_direction.getY();
 	double ray_direction_z = ray_direction.getZ();
@@ -40,12 +39,14 @@ double Sphere::findIntersection(Ray ray) {
 	double sphere_center_x = sphere_center.getX();
 	double sphere_center_y = sphere_center.getY();
 	double sphere_center_z = sphere_center.getZ();
+	double sphere_radius = _radius;
 
 	double a = 1.0; /// normalized
-	double b = (2 * (ray_origin_x - sphere_center_x) * ray_direction_x) +
+	double b = (2 * (ray_origin_x - sphere_center_x) * ray_direction_x ) +
 		(2 * (ray_origin_y - sphere_center_y) * ray_direction_y) +
 		(2 * (ray_origin_z - sphere_center_z) * ray_direction_z);
-	/// @variable c is the difference between
+	
+	/// <variable> c is the difference between
 	/// the distance from the center of the ray to the center of the sphere (squared)
 	/// and the ray (squared)
 	/// so if the number is zero it means that the ray came from
@@ -54,11 +55,11 @@ double Sphere::findIntersection(Ray ray) {
 	/// if its a positive number it means the ray came from OUTSIDE THE SPHERE
 	double c = pow(ray_origin_x - sphere_center_x, 2) +
 		pow(ray_origin_y - sphere_center_y, 2) +
-		pow(ray_origin_z - sphere_center_z, 2);
+		pow(ray_origin_z - sphere_center_z, 2) - (sphere_radius*sphere_radius);
 	/// @variable (missing the discription...)
-	double discriminant = b*b - 4 * c;
+	double discriminant = (b*b) - (4 * c);
 
-	if (discriminant > 0) {
+	if (discriminant > 0.0) {
 		/// the ray intersects the sphere
 
 		/// the first root

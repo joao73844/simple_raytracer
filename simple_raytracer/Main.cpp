@@ -104,16 +104,21 @@ int main(int argc, char * argv[]) {
 
 			// Pixel Color
 			/// If its inside the coloring area
-			if ((x > 200 && x < 440) && (y > 200 && y < 280)) {
-				pixels[thisone].r = 23;
-				pixels[thisone].g = 222;
-				pixels[thisone].b = 10;
-			}
-			else {
-				/// Its in the margin
+			if (index_of_closest_obj == -1) {
+				/// Set the backgroung to black
 				pixels[thisone].r = 0;
 				pixels[thisone].g = 0;
 				pixels[thisone].b = 0;
+			}
+			else {
+				/// Its in the margin
+				/// index corresponds to an object in the scene
+
+				Color this_color = scene_objects.at(index_of_closest_obj)->getColor();
+
+				pixels[thisone].r = this_color.getRed();
+				pixels[thisone].g = this_color.getGreen();
+				pixels[thisone].b = this_color.getBlue();
 			}
 		}
 	}

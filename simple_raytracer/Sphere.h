@@ -9,7 +9,6 @@
 #include "Vect.h"
 #include "Color.h"
 
-
 class Sphere : public Object3D {
 	Vect _center;
 	double _radius;
@@ -26,7 +25,7 @@ public:
 	/// GETTERS
 	Vect getSphereCenter() { return _center; }
 	double getSphereRadius() { return _radius; }
-	Color getSphereColor() { return _color; }
+	Color getColor() { return _color; }
 	
 	// GEOMETRY OPERATIONS
 	/// returns the normal vector at a point of intersection

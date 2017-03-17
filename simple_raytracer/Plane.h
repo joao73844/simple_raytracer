@@ -25,7 +25,7 @@ public:
 	/// GETTERS
 	Vect getPlaneNormal() { return _normal; }
 	double getPlaneDistance() { return _distance; }
-	Color getPlaneColor() { return _color; }
+	Color getColor() { return _color; }
 	
 	/// GEOMETRY METHODS
 	Vect Plane::getNormalAt(Vect intersectionPoint) {

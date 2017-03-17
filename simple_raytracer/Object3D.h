@@ -22,11 +22,9 @@ public:
 
 	// Method Functions
 	/// GETTERS
-	Color getObjectColor() { return Color(0.0, 0.0, 0.0, 0); }
+	virtual Color getColor() = 0;
 	/// GEOMETRY OPERATIONS
-	double findIntersection(Ray ray) {
-		return 0.0;
-	}
+	virtual double findIntersection(Ray ray) = 0;
 	// WARNING
 	/// DO NOT USE THIS METHOD
 	virtual IntersectionPoint findIntersection_2(Ray ray) { return IntersectionPoint(Vect(), Vect()); }
