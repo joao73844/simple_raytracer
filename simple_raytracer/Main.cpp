@@ -35,6 +35,9 @@ int main(int argc, char * argv[]) {
 	Camera scene_cam(campos, camdir, camright, camdown);
 
 	// Light Creation
+	/// Light parameters
+	double ambientlight = 0.2;
+	double accuracy = 0.000001; /// This is the ERROR margin
 	/// Light Colors
 	Color white(1.0, 1.0, 1.0, 1.0);
 	Color pretty_green(0.5, 1.0, 0.5, 0.3);
@@ -43,7 +46,10 @@ int main(int argc, char * argv[]) {
 	Color maroon(0.5, 0.25, 0.25, 0);
 	/// Light Position
 	Vect light_position(-7, 10, -10);
+	/// Light Sources
 	Light scene_light(light_position, white);
+	std::vector<LightSource*> light_sources;
+	light_sources.push_back(dynamic_cast<LightSource*>(&scene_light));
 
 
 	// Scene Objects
@@ -61,69 +67,94 @@ int main(int argc, char * argv[]) {
 	/// and slightly to the right, of the direction the camera is pointing
 	double xamnt, yamnt;
 
-	// Ray Tracing Algorithm
-	for (int x = 0; x < width; x++) {
-		for (int y = 0; y < height; y++) {
-			thisone = y* width + x;
 
-			/// Without AntiAliasing
-			if (width > height) {
-				/// image is wider than it is tall
-				xamnt = ((x + 0.5) / width)*aspectratio - (((width - height) / (double)height) / 2);
-				yamnt = ((height - y) + 0.5) / height;
-			}
-			else if (height > width) {
-				/// image is taller than it is wide
-				xamnt = (x + 0.5) / width;
-				yamnt = (((height - y) + 0.5) / height) / aspectratio - (((height - width) / (double)width) / 2);
-			}
-			else {
-				/// the image is square
-				xamnt = (x + 0.5) / width;
-				yamnt = ((height - y) + 0.5) / height;
-			}
 
-			// Rays
-			/// Ray coordinates
-			/// The Ray will be shoot from the camera, so it
-			/// has to come from the same point
-			Vect cam_ray_origin = scene_cam.getCameraPosition();
-			Vect cam_ray_direction = camdir.vectAdd(camright.vectMul(xamnt - 0.5).vectAdd(camdown.vectMul(yamnt - 0.5))).normalize();
-			Ray cam_ray(cam_ray_origin, cam_ray_direction);
+	/// This is just to make the compilation faster
+	/// so when we are just working on classes
+	/// outside of the main class, the compilation
+	/// is faster
+	// TO DELETE, WHEN THE PROJECT IS FINISHED
+	if (!__SKIP__) {
+		// Ray Tracing Algorithm
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				thisone = y* width + x;
 
-			// Check the intersections
-			/// vector containing the result of all the intersection operations
-			std::vector <double> intersections;
-			/// check if the ray intersects any of the objects in the scene
-			for (unsigned int index = 0; index < scene_objects.size(); index++) {
-				intersections.push_back(scene_objects.at(index)->findIntersection(cam_ray));
-			}
+				/// Without AntiAliasing
+				if (width > height) {
+					/// image is wider than it is tall
+					xamnt = ((x + 0.5) / width)*aspectratio - (((width - height) / (double)height) / 2);
+					yamnt = ((height - y) + 0.5) / height;
+				}
+				else if (height > width) {
+					/// image is taller than it is wide
+					xamnt = (x + 0.5) / width;
+					yamnt = (((height - y) + 0.5) / height) / aspectratio - (((height - width) / (double)width) / 2);
+				}
+				else {
+					/// the image is square
+					xamnt = (x + 0.5) / width;
+					yamnt = ((height - y) + 0.5) / height;
+				}
 
-			// Determine what object is the closest one
-			int index_of_closest_obj = closestObject(intersections);
+				// Rays
+				/// Ray coordinates
+				/// The Ray will be shoot from the camera, so it
+				/// has to come from the same point
+				Vect cam_ray_origin = scene_cam.getCameraPosition();
+				Vect cam_ray_direction = camdir.vectAdd(camright.vectMul(xamnt - 0.5).vectAdd(camdown.vectMul(yamnt - 0.5))).normalize();
+				Ray cam_ray(cam_ray_origin, cam_ray_direction);
 
-			// Pixel Color
-			/// If its inside the coloring area
-			if (index_of_closest_obj == -1) {
-				/// Set the backgroung to black
-				pixels[thisone].r = 0;
-				pixels[thisone].g = 0;
-				pixels[thisone].b = 0;
-			}
-			else {
-				/// Its in the margin
-				/// index corresponds to an object in the scene
+				// Check the intersections
+				/// vector containing the result of all the intersection operations
+				std::vector <double> intersections;
+				/// check if the ray intersects any of the objects in the scene
+				for (unsigned int index = 0; index < scene_objects.size(); index++) {
+					intersections.push_back(scene_objects.at(index)->findIntersection(cam_ray));
+				}
 
-				Color this_color = scene_objects.at(index_of_closest_obj)->getColor();
+				// Determine what object is the closest one
+				int index_of_closest_obj = closestObject(intersections);
 
-				pixels[thisone].r = this_color.getRed();
-				pixels[thisone].g = this_color.getGreen();
-				pixels[thisone].b = this_color.getBlue();
-			}
-		}
+				// Pixel Color
+				/// If its inside the coloring area
+				if (index_of_closest_obj == -1) {
+					/// Set the backgroung to black
+					pixels[thisone].r = 0;
+					pixels[thisone].g = 0;
+					pixels[thisone].b = 0;
+				}
+				else {
+					/// Its in the margin
+					/// index corresponds to an object in the scene
+					// Eliminate Black dots due to intersection errors
+					if (intersections.at(index_of_closest_obj) > accuracy) {
+						// Determine the position and direction vectors at the point of intersection
+						/// Computing the intersection position...
+						Vect intersection_position = cam_ray_origin.vectAdd(cam_ray_direction.vectMul(intersections.at(index_of_closest_obj)));
+						/// Computing the intersection direction...
+						Vect intersection_ray_direction = cam_ray_direction;
+
+
+						// Compute Shadows
+						Color intersection_color = getColorAt(intersection_position,
+							intersection_ray_direction,
+							scene_objects,
+							index_of_closest_obj,
+							light_sources,
+							accuracy,
+							ambientlight);
+						pixels[thisone].r = intersection_color.getRed();
+						pixels[thisone].g = intersection_color.getGreen();
+						pixels[thisone].b = intersection_color.getBlue();
+					}
+				}
+			} /// END of FIRST FOR loop of RAY TRAYCER Algorithmn
+		} // END of RAY TRAYCER Algorithmn
+
+		savebmp("scene.bmp", _WIDTH_, _HEIGHT_, _DPI_, pixels);
+
 	}
-
-	savebmp("scene.bmp", _WIDTH_, _HEIGHT_, _DPI_, pixels);
 
 	return 0;
 }

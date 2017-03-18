@@ -46,6 +46,10 @@ public:
 	/// Returns the vector resulting of adding this
 	/// vector with the given vector
 	Vect vectAdd(Vect v);
+	/// Vector Subtraction
+	/// Returns the vector resulting of subtracting this
+	/// vector with the given vector
+	Vect vectSub(Vect v);
 };
 
 

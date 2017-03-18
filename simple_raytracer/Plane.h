@@ -28,7 +28,7 @@ public:
 	Color getColor() { return _color; }
 	
 	/// GEOMETRY METHODS
-	Vect Plane::getNormalAt(Vect intersectionPoint) {
+	Vect getNormalAt(Vect intersectionPoint) {
 		return _normal;
 	}
 	double findIntersection(Ray ray);

@@ -50,3 +50,8 @@ Vect Vect::vectAdd(Vect v)
 {
 	return Vect(_x + v.getX(), _y + v.getY(), _z + v.getZ());
 }
+
+Vect Vect::vectSub(Vect v)
+{
+	return Vect(_x - v.getX(), _y - v.getY(), _z - v.getZ());
+}

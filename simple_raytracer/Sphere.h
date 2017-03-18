@@ -29,9 +29,9 @@ public:
 	
 	// GEOMETRY OPERATIONS
 	/// returns the normal vector at a point of intersection
-	Vect getNormalAt(Vect point) {
+	Vect getNormalAt(Vect intersectionPoint) {
 		/// normal always points away from the center of a sphere
-		return point.vectAdd(_center.negation()).normalize();
+		return intersectionPoint.vectAdd(_center.negation()).normalize();
 	}
 	/// <funtion> checks if the Ray intersects
 	/// with the Sphere and returns the distance of the

@@ -3,10 +3,9 @@
 #define __LIGHT_H__
 
 // Project File Headers
-#include "Vect.h"
-#include "Color.h"
+#include "LightSource.h"
 
-class Light {
+class Light : public LightSource {
 	Vect _position;
 	Color _color;
 public:

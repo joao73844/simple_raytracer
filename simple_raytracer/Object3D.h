@@ -25,6 +25,7 @@ public:
 	virtual Color getColor() = 0;
 	/// GEOMETRY OPERATIONS
 	virtual double findIntersection(Ray ray) = 0;
+	virtual Vect getNormalAt(Vect intersectionPoint) = 0;
 	// WARNING
 	/// DO NOT USE THIS METHOD
 	virtual IntersectionPoint findIntersection_2(Ray ray) { return IntersectionPoint(Vect(), Vect()); }
